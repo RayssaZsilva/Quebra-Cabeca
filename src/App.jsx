@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { topics } from "./data/topics";
 import "./App.css";
+import cerebro from "./assets/cerebro.png";
 
 function App() {
   const [topic, setTopic] = useState(null);
@@ -105,6 +106,11 @@ function novoDesafio() {
   return (
     <main className="app">
       <header className="header">
+      <img
+      src={cerebro}
+      alt="Ilustração de um cerebro"
+      className="brain-img"
+      />
         <h1>Quebra-Cabeça</h1>
         <p>Pesquise. Pense. Explique.</p>
       </header>
