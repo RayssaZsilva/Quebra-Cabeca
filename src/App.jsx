@@ -8,6 +8,15 @@ function App() {
   const [isResearching, setIsResearching] = useState(false);
   const [speechTime, setSpeechTime] = useState(60);
   const [isSpeaking, setIsSpeaking] = useState(false);
+  const [history, setHistory] = useState(() => {
+  const savedHistory = localStorage.getItem("quebraCabecaHistory");
+
+  return savedHistory ? JSON.parse(savedHistory) : [];
+});
+
+  const [isSaved, setIsSaved] = useState(false);
+
+
 
   function sortearAssunto() {
     const indice = Math.floor(Math.random() * topics.length);
@@ -59,6 +68,38 @@ const segundosFala = speechTime % 60;
 const falaFormatada = `${String(minutosFala).padStart(2, "0")}:${String(
   segundosFala
 ).padStart(2, "0")}`;
+
+function salvarNoHistorico() {
+  if (!topic || isSaved) return;
+
+  const novoRegistro = {
+    id: Date.now(),
+    topic: topic,
+    date: new Date().toLocaleDateString("pt-BR"),
+  };
+
+  const novoHistorico = [...history, novoRegistro];
+
+  setHistory(novoHistorico);
+  setIsSaved(true);
+
+  localStorage.setItem(
+    "quebraCabecaHistory",
+    JSON.stringify(novoHistorico)
+  );
+}
+
+function novoDesafio() {
+  setTopic(null);
+
+  setTimeLeft(10);
+  setIsResearching(false);
+
+  setSpeechTime(60);
+  setIsSpeaking(false);
+  setIsSaved(false);
+}
+
 
 
   return (
@@ -114,15 +155,37 @@ const falaFormatada = `${String(minutosFala).padStart(2, "0")}:${String(
     {isSpeaking && speechTime > 0 && (
       <p>Explique com suas próprias palavras.</p>
     )}
+{speechTime === 0 && (
+  <div>
+    <p>Desafio concluído! 🧩</p>
 
-    {speechTime === 0 && (
-      <p>Desafio concluído! 🧩</p>
-    )}
+    <button onClick={salvarNoHistorico}
+    disabled={isSaved}>
+     {isSaved ? "Salvo" : "Salvar histórico"}
+    </button>
+
+    <button onClick={novoDesafio}>Novo desafio</button>
+
+  </div>
+)}
+
   </div>
 )}
           </div>
         )}
       </section>
+        {history.length > 0 && (
+  <section className="history">
+    <h2>Meu histórico</h2>
+
+    {history.map((item) => (
+      <div key={item.id}>
+        <strong>{item.topic}</strong>
+        <span> — {item.date}</span>
+      </div>
+    ))}
+  </section>
+)}
     </main>
   );
 }
