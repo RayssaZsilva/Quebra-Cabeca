@@ -5,7 +5,7 @@ import cerebro from "./assets/cerebro.png";
 
 function App() {
   const [topic, setTopic] = useState(null);
-  const [timeLeft, setTimeLeft] = useState(600);
+  const [timeLeft, setTimeLeft] = useState(0);
   const [isResearching, setIsResearching] = useState(false);
   const [speechTime, setSpeechTime] = useState(60);
   const [isSpeaking, setIsSpeaking] = useState(false);
@@ -46,7 +46,7 @@ function App() {
 
 
   function iniciarPesquisa() {
-    setTimeLeft(6);
+    setTimeLeft(5*60);
     setIsResearching(true);
   }
 
@@ -59,7 +59,7 @@ function App() {
 
 
   function iniciarFala() {
-  setSpeechTime(5);
+  setSpeechTime(60);
   setIsSpeaking(true);
 }
 
@@ -93,7 +93,7 @@ function salvarNoHistorico() {
 function novoDesafio() {
   setTopic(null);
 
-  setTimeLeft(10);
+  setTimeLeft(0);
   setIsResearching(false);
 
   setSpeechTime(60);
